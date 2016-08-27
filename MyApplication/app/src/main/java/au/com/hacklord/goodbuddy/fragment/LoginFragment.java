@@ -1,23 +1,25 @@
 package au.com.hacklord.goodbuddy.fragment;
 
 import android.content.Context;
-import android.net.Uri;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import au.com.hacklord.goodbuddy.R;
+import au.com.hacklord.goodbuddy.databinding.FragmentLoginBinding;
+import au.com.hacklord.goodbuddy.viewmodel.LoginViewModel;
 
 public class LoginFragment extends Fragment {
 
-    public interface OnLoginSuccessListener
+ /*   public interface OnLoginSuccessListener
     {
         void onLoginSuccess();
     }
 
-    OnLoginSuccessListener onLoginSuccessListener;
+    OnLoginSuccessListener onLoginSuccessListener;*/
 
     public LoginFragment() {
         // Required empty public constructor
@@ -33,8 +35,9 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+
+        FragmentLoginBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_login);
+        binding.setLoginViewModel(new LoginViewModel());
     }
 
     @Override
@@ -47,17 +50,17 @@ public class LoginFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnLoginSuccessListener) {
+/*        if (context instanceof OnLoginSuccessListener) {
             onLoginSuccessListener = (OnLoginSuccessListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+                    + " must implement OnLoginSuccessListener");
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        onLoginSuccessListener = null;
+       /* onLoginSuccessListener = null;*/
     }
 }

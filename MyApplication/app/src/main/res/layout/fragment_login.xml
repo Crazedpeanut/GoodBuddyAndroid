@@ -1,9 +1,50 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="au.com.hacklord.goodbuddy.fragment.LoginFragment">
+<layout>
+    <data>
+        <variable name="loginViewModel" type="au.com.hacklord.goodbuddy.viewmodel.LoginViewModel"/>
+    </data>
 
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="au.com.hacklord.goodbuddy.fragment.LoginFragment">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_welcome_message"
+            android:id="@+id/login_welcome_message"/>
 
-</FrameLayout>
+        <RelativeLayout
+            android:id="@+id/login_view"
+            android:layout_below="@id/login_welcome_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_username_field"
+                android:hint="@string/login_username_hint"
+                android:text="@{loginViewModel.username}"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/login_password_hint"
+                android:layout_below="@id/login_username_field"
+                android:id="@+id/login_password_field"
+                android:text="@{loginViewModel.password}"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_password_field"
+                android:id="@+id/login_submit_button"
+                android:text="@string/login_submit_text"
+                android:onClick="@{loginViewModel.onSubmitButtonClicked}"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>
