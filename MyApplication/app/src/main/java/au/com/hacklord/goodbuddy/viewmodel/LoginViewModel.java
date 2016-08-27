@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import au.com.hacklord.goodbuddy.manager.UserManager;
+import au.com.hacklord.goodbuddy.model.User;
 
 /**
  * Created by john on 27/08/2016.
@@ -17,9 +18,20 @@ public class LoginViewModel {
 
     UserManager userManager;
 
+    public LoginViewModel(UserManager userManager)
+    {
+        this.userManager = userManager;
+    }
+
     public void onSubmitButtonClicked(View view)
     {
         Log.d(TAG, "Login Submit Clicked! " + username + " " + password );
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        userManager.setUser(user);
+
+        userManager.attemptLogin();
     }
 
     public String getUsername() {

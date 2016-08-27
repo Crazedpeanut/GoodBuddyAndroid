@@ -1,29 +1,15 @@
-package au.com.hacklord.goodbuddy.model;
+package au.com.hacklord.goodbuddy.dto;
 
 /**
  * Created by john on 27/08/2016.
  */
-public class User {
+public class RegistrationRequestDto {
     private String id;
     private String firstName;
     private String lastName;
     private String username;
     private String password;
     private String email;
-    private boolean isLoggedIn;
-
-    public User clone() {
-        User userClone = new User();
-
-        userClone.setEmail(email);
-        userClone.setId(id);
-        userClone.setLastName(lastName);
-        userClone.setFirstName(firstName);
-        userClone.setUsername(username);
-        userClone.setLoggedIn(isLoggedIn);
-
-        return userClone;
-    }
 
     public String getId() {
         return id;
@@ -57,27 +43,19 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean getIsLoggedIn() {
-        return isLoggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

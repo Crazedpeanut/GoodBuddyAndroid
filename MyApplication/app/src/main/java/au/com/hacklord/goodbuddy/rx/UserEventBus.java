@@ -1,5 +1,7 @@
 package au.com.hacklord.goodbuddy.rx;
 
+import android.util.Log;
+
 import au.com.hacklord.goodbuddy.model.User;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -10,6 +12,7 @@ import rx.subjects.PublishSubject;
 public class UserEventBus implements IRxBus<User> {
 
     PublishSubject<IRxEvent<User>> subject = PublishSubject.create();
+    static final String TAG = "UserEventBus";
 
     @Override
     public Observable<IRxEvent<User>> getEvents() {
@@ -25,6 +28,8 @@ public class UserEventBus implements IRxBus<User> {
     public void putEvent(User user) {
         UserEvent event = new UserEvent();
         event.setData(user);
+
+        Log.d(TAG, "Putting new user event on User event bus");
 
         subject.onNext(event);
     }

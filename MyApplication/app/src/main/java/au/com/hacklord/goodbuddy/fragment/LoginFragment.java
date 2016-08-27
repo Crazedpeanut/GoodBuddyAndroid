@@ -4,20 +4,40 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import au.com.hacklord.goodbuddy.R;
 import au.com.hacklord.goodbuddy.databinding.FragmentLoginBinding;
+import au.com.hacklord.goodbuddy.manager.UserManager;
+import au.com.hacklord.goodbuddy.model.User;
+import au.com.hacklord.goodbuddy.rx.IRxEvent;
+import au.com.hacklord.goodbuddy.session.UserSession;
 import au.com.hacklord.goodbuddy.viewmodel.LoginViewModel;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class LoginFragment extends Fragment {
+
+    public interface LoginSuccessListener
+    {
+        public void onLoginSuccess();
+    }
+
+    LoginSuccessListener loginSuccessListener;
 
     View fragmentRootView;
     LoginViewModel loginViewModel;
 
     FragmentLoginBinding binding;
+
+    static final String TAG = "LoginFragment";
+
+    Subscription userSessionSubscription;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -34,7 +54,7 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loginViewModel = new LoginViewModel();
+        loginViewModel = new LoginViewModel(new UserManager());
     }
 
     @Override
@@ -52,17 +72,47 @@ public class LoginFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnLoginSuccessListener) {
-            onLoginSuccessListener = (OnLoginSuccessListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnLoginSuccessListener");
-        }*/
+
+        if(context instanceof LoginSuccessListener)
+        {
+            loginSuccessListener = (LoginSuccessListener) context;
+        }
+        else
+        {
+            throw new RuntimeException("Must implement LoginSuccessListener");
+        }
+
+        userSessionSubscription = UserSession.getInstance().getEventBus().getEvents()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<IRxEvent<User>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "Error!" + e);
+                    }
+
+                    @Override
+                    public void onNext(IRxEvent<User> userIRxEvent) {
+
+                        Log.d(TAG, "User event recieved!");
+
+                        if(userIRxEvent.getData().getIsLoggedIn())
+                        {
+                            Log.d(TAG, "Is logged in");
+                        }
+                    }
+                });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-       /* onLoginSuccessListener = null;*/
+
+       loginSuccessListener = null;
+        userSessionSubscription.unsubscribe();
     }
 }

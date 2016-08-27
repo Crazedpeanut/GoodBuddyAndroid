@@ -1,11 +1,12 @@
-package au.com.hacklord.goodbuddy.model;
+package au.com.hacklord.goodbuddy.dto;
 
+import au.com.hacklord.goodbuddy.model.User;
 import au.com.hacklord.goodbuddy.service.AbstractServiceResponse;
 
 /**
  * Created by john on 27/08/2016.
  */
-public class AuthenticationResponse extends AbstractServiceResponse<AuthenticationResponse> {
+public class AuthenticationResponseDto extends AbstractServiceResponse<AuthenticationResponseDto> {
     private String error;
     private User user;
 

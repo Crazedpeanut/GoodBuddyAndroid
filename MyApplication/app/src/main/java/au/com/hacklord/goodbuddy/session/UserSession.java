@@ -35,7 +35,7 @@ public class UserSession {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "Error subscribing to user event bus");
+                        Log.e(TAG, "AppError subscribing to user event bus");
                     }
 
                     @Override
@@ -69,5 +69,13 @@ public class UserSession {
         }
 
         return true;
+    }
+
+    public UserEventBus getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(UserEventBus eventBus) {
+        this.eventBus = eventBus;
     }
 }
