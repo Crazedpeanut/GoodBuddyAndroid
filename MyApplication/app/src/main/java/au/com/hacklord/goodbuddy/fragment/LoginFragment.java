@@ -14,12 +14,10 @@ import au.com.hacklord.goodbuddy.viewmodel.LoginViewModel;
 
 public class LoginFragment extends Fragment {
 
- /*   public interface OnLoginSuccessListener
-    {
-        void onLoginSuccess();
-    }
+    View fragmentRootView;
+    LoginViewModel loginViewModel;
 
-    OnLoginSuccessListener onLoginSuccessListener;*/
+    FragmentLoginBinding binding;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -36,15 +34,19 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FragmentLoginBinding binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_login);
-        binding.setLoginViewModel(new LoginViewModel());
+        loginViewModel = new LoginViewModel();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        binding.setLoginViewModel(loginViewModel);
+
+        fragmentRootView = binding.getRoot();
+
+        return fragmentRootView;
     }
 
     @Override

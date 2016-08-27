@@ -29,4 +29,9 @@ public class UserManager {
         return UserSession.isLoggedIn();
     }
 
+    public void attemptLogin()
+    {
+
+    }
+
 }

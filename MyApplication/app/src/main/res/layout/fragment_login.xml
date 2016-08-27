@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/login_username_field"
                 android:hint="@string/login_username_hint"
-                android:text="@{loginViewModel.username}"/>
+                android:text="@={loginViewModel.username}"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:hint="@string/login_password_hint"
                 android:layout_below="@id/login_username_field"
                 android:id="@+id/login_password_field"
-                android:text="@{loginViewModel.password}"/>
+                android:text="@={loginViewModel.password}"/>
 
             <Button
                 android:layout_width="wrap_content"
