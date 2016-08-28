@@ -1,0 +1,36 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="registViewModel" type="au.com.hacklord.goodbuddy.viewmodel.RegistViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/registrationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_username_field"
+            android:hint="@string/login_username_hint"
+            android:text="@={registViewModel.username}"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/login_password_hint"
+            android:layout_below="@id/login_username_field"
+            android:id="@+id/login_password_field"
+            android:text="@={registViewModel.password}"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_password_field"
+            android:id="@+id/registration_submit_text"
+            android:text="@string/registration_submit_text"
+            android:onClick="@{registViewModel.onSubmitButtonClicked}"/>
+    </RelativeLayout>
+</layout>

@@ -1,22 +1,26 @@
 package au.com.hacklord.goodbuddy.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by john on 27/08/2016.
  */
 public class RegistrationRequestDto {
-    private String id;
+
     private String firstName;
     private String lastName;
     private String username;
     private String password;
     private String email;
+    private String fcmId;
 
-    public String getId() {
-        return id;
+
+    public String getFcmId() {
+        return fcmId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFcmId(String fcmId) {
+        this.fcmId = fcmId;
     }
 
     public String getFirstName() {

@@ -1,0 +1,57 @@
+<layout>
+    <data>
+        <variable name="buddyViewModel" type="au.com.hacklord.goodbuddy.viewmodel.BuddyViewModel"/>
+        <import type="me.tatarka.bindingcollectionadapter.LayoutManagers" />
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="au.com.hacklord.goodbuddy.fragment.BuddyFragment"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <RelativeLayout
+            android:id="@+id/scene"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/good_buddy_bg">
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="500dp"
+                android:src="@mipmap/billy_t_hoodie"
+                android:background="#00ffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="54dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:background="@mipmap/good_buddy_speech_2lines"
+                android:id="@+id/buddy_comment"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:text="@{buddyViewModel.comment}"
+                android:gravity="center"
+                android:textSize="30dp"
+                android:visibility="@{buddyViewModel.showSpeech ? View.VISIBLE:View.GONE}"/>
+
+            <ListView
+                android:id="@+id/question_answers"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:items="@{buddyViewModel.questionAnswers}"
+                app:itemView="@{buddyViewModel.questionAnswerItem}"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>
+

@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import au.com.hacklord.goodbuddy.R;
+import au.com.hacklord.goodbuddy.fragment.BuddyFragment;
 import au.com.hacklord.goodbuddy.fragment.LoginFragment;
 import au.com.hacklord.goodbuddy.manager.UserManager;
 import au.com.hacklord.goodbuddy.model.AppError;
@@ -18,9 +20,18 @@ import au.com.hacklord.goodbuddy.session.SessionErrors;
 import rx.Subscriber;
 import rx.Subscription;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.LoginSuccessListener {
+public class MainActivity extends AppCompatActivity implements LoginFragment.LoginSuccessListener{
+
+    public interface SwapViewRequestListener
+    {
+        void onSwapViewRequest(Fragment newFrag, boolean addToBackStack);
+    }
+
+    static final String TAG = "MainActivity";
 
     LoginFragment loginFragment;
+    BuddyFragment buddyFragment;
+    public SwapViewRequestListener swapViewRequestListener;
 
     View rootView;
     View fragmentContainer;
@@ -34,6 +45,13 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        swapViewRequestListener = new SwapViewRequestListener() {
+            @Override
+            public void onSwapViewRequest(Fragment newFrag, boolean addToBackStack) {
+                swapFragment(newFrag, addToBackStack);
+            }
+        };
 
         fragmentContainer = findViewById(R.id.main_fragment_container);
         rootView = getWindow().getDecorView().getRootView();
@@ -54,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG, e.getMessage());
                     }
 
                     @Override
@@ -96,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
     void initFragments()
     {
         loginFragment = LoginFragment.newInstance();
+        buddyFragment = BuddyFragment.newInstance();
     }
 
     void swapFragment(Fragment fragment, boolean addToBackStack)
@@ -115,5 +134,6 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Log
 
     @Override
     public void onLoginSuccess() {
+        swapFragment(buddyFragment, false);
     }
 }

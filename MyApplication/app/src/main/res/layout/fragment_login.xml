@@ -44,7 +44,14 @@
                 android:layout_below="@id/login_password_field"
                 android:id="@+id/login_submit_button"
                 android:text="@string/login_submit_text"
-                android:onClick="@{loginViewModel.onSubmitButtonClicked}"/>
+                android:onClick="@{loginViewModel::onSubmitButtonClicked}"/>
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/signupbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_view"
+            android:text="Sign up"/>
     </RelativeLayout>
 </layout>

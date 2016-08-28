@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import au.com.hacklord.goodbuddy.R;
+import au.com.hacklord.goodbuddy.activity.MainActivity;
 import au.com.hacklord.goodbuddy.databinding.FragmentLoginBinding;
 import au.com.hacklord.goodbuddy.manager.UserManager;
 import au.com.hacklord.goodbuddy.model.User;
@@ -32,6 +34,8 @@ public class LoginFragment extends Fragment {
 
     View fragmentRootView;
     LoginViewModel loginViewModel;
+    Button signUpButton;
+    RegistrationFragment registrationFragment;
 
     FragmentLoginBinding binding;
 
@@ -54,6 +58,7 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        registrationFragment = RegistrationFragment.newInstance();
         loginViewModel = new LoginViewModel(new UserManager());
     }
 
@@ -65,6 +70,15 @@ public class LoginFragment extends Fragment {
         binding.setLoginViewModel(loginViewModel);
 
         fragmentRootView = binding.getRoot();
+
+        signUpButton = (Button)fragmentRootView.findViewById(R.id.signupbutton);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity mainActivity = (MainActivity)getActivity();
+                mainActivity.swapViewRequestListener.onSwapViewRequest(registrationFragment, true);
+            }
+        });
 
         return fragmentRootView;
     }
@@ -103,6 +117,7 @@ public class LoginFragment extends Fragment {
                         if(userIRxEvent.getData().getIsLoggedIn())
                         {
                             Log.d(TAG, "Is logged in");
+                            loginSuccessListener.onLoginSuccess();
                         }
                     }
                 });

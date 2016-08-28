@@ -4,10 +4,13 @@ package au.com.hacklord.goodbuddy.manager;
 import android.util.Log;
 
 import au.com.hacklord.goodbuddy.dto.AuthenticationResponseDto;
+import au.com.hacklord.goodbuddy.dto.RegistrationResponseDto;
 import au.com.hacklord.goodbuddy.exception.GoodBuddyAuthenticationException;
+import au.com.hacklord.goodbuddy.exception.GoodBuddyException;
 import au.com.hacklord.goodbuddy.model.AppError;
 import au.com.hacklord.goodbuddy.model.User;
 import au.com.hacklord.goodbuddy.service.AuthServiceHelper;
+import au.com.hacklord.goodbuddy.service.UserServiceHelper;
 import au.com.hacklord.goodbuddy.session.SessionErrors;
 import au.com.hacklord.goodbuddy.session.UserSession;
 import rx.Observable;
@@ -76,13 +79,46 @@ public class UserManager {
                 });
     }
 
+    public void attemptRegistration()
+    {
+        UserServiceHelper userServiceHelper = new UserServiceHelper();
+
+        Log.d(TAG, "Attempting log in");
+
+        userServiceHelper.registerUser(user)
+                .map(new Func1<RegistrationResponseDto, User>()
+                {
+                    @Override
+                    public User call(RegistrationResponseDto dto) {
+                        return validateResponse(dto);
+                    }
+                })
+                .subscribe(new Subscriber<User>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "Completed attempt auth request");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, e.getMessage());
+                        SessionErrors.createError(e.getMessage(), AppError.ErrorType.AUTH);
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        updateUserSession(user);
+                    }
+                });
+    }
+
     void updateUserSession(User user)
     {
         Log.d(TAG, "Updating user session");
         UserSession.getInstance().getEventBus().putEvent(user);
     }
 
-    User validateResponse(AuthenticationResponseDto dto) throws GoodBuddyAuthenticationException
+    User validateResponse(RegistrationResponseDto dto) throws GoodBuddyAuthenticationException
     {
         User user;
 
@@ -91,7 +127,22 @@ public class UserManager {
             throw new GoodBuddyAuthenticationException(dto.getError());
         }
 
-        user = getUser();
+        user = dto.getUser();
+        user.setLoggedIn(true);
+
+        return user;
+    }
+
+    User validateResponse(AuthenticationResponseDto dto) throws GoodBuddyAuthenticationException
+    {
+        User user;
+
+        if(dto.getError().length() != 0)
+        {
+            throw new GoodBuddyException(dto.getError());
+        }
+
+        user = dto.getUser();
         user.setLoggedIn(true);
 
         return user;

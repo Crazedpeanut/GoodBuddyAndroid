@@ -1,16 +1,27 @@
 package au.com.hacklord.goodbuddy.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by john on 27/08/2016.
  */
 public class User {
+
+    @SerializedName("_id")
     private String id;
+
+    @SerializedName("firstname")
     private String firstName;
+
+    @SerializedName("lastname")
     private String lastName;
-    private String username;
+
+    @SerializedName("username")
+    private String userName;
     private String password;
     private String email;
     private boolean isLoggedIn;
+    private String fcmId;
 
     public User clone() {
         User userClone = new User();
@@ -19,10 +30,19 @@ public class User {
         userClone.setId(id);
         userClone.setLastName(lastName);
         userClone.setFirstName(firstName);
-        userClone.setUsername(username);
+        userClone.setUsername(userName);
         userClone.setLoggedIn(isLoggedIn);
+        userClone.setFcmId(fcmId);
 
         return userClone;
+    }
+
+    public String getFcmId() {
+        return fcmId;
+    }
+
+    public void setFcmId(String fcmId) {
+        this.fcmId = fcmId;
     }
 
     public String getId() {
@@ -50,11 +70,11 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     public String getEmail() {
